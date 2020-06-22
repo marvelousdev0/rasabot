@@ -1,0 +1,79 @@
+actions:
+- action_check_basic_api
+- action_check_weather
+- action_employee_details
+- utter_ask_employee_id
+- utter_ask_job_title
+- utter_cheer_up
+- utter_did_that_help
+- utter_employee_first_name
+- utter_employee_id_successful
+- utter_goodbye
+- utter_greet
+- utter_happy
+- utter_iamabot
+- utter_job_title_successful
+- utter_list_employees
+- utter_wrong_employee_id
+- utter_wrong_job_title
+entities:
+- designation
+- emp_id
+forms:
+- form_employee_first_name
+- form_employee_job_title
+intents:
+- employee_details
+- list_employees
+- affirm
+- check_weather
+- check_basic_api
+- employee_first_name
+- greet
+- goodbye
+- deny
+- mood_great
+- mood_unhappy
+- bot_challenge
+responses:
+  utter_ask_employee_id:
+  - text: Can you please provide employee ID to continue?
+  utter_ask_job_title:
+  - text: Please tell me the job title
+  utter_cheer_up:
+  - image: https://i.imgur.com/nGF1K8f.jpg
+    text: 'Here is something to cheer you up:'
+  utter_did_that_help:
+  - text: Did that help you?
+  utter_employee_first_name:
+  - text: Sure!
+  utter_employee_id_successful:
+  - text: Employee ID is captured.
+  utter_goodbye:
+  - text: Bye
+  utter_greet:
+  - text: Hey! How are you?
+  utter_happy:
+  - text: Great, carry on!
+  utter_iamabot:
+  - text: I am a bot, powered by Rasa.
+  utter_job_title_successful:
+  - text: Job title captured successfully.
+  utter_list_employees:
+  - text: Sure!
+  utter_wrong_employee_id:
+  - text: Wrong employee ID provided!
+  utter_wrong_job_title:
+  - text: Wrong job title provided!
+session_config:
+  carry_over_slots_to_new_session: true
+  session_expiration_time: 60
+slots:
+  employee_id:
+    auto_fill: false
+    type: unfeaturized
+  job_title:
+    auto_fill: false
+    type: unfeaturized
+  requested_slot:
+    type: unfeaturized
