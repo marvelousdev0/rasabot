@@ -20,6 +20,7 @@
 - correct
 - [EMP001](emp_id)
 - [District Directives Developer](designation)
+- [San Francisco](location_name)
 
 ## intent:deny
 - no
@@ -87,7 +88,6 @@
 - i want to know employee details for [EMP001](emp_id)
 - i wanna know employee details for [EMP001](emp_id)
 - [EMP001](emp_id) details
-- [EMP001](emp_id) details
 
 ## intent:check_basic_api
 - confirm whether api is working
@@ -97,3 +97,12 @@
 - Show me the weather details
 - show me the weather details
 - show me weather details
+- show me weather
+
+## intent:check_weather_location
+- show me the weather for [New York](location_name)
+- [Chicago](location_name) weather
+- Is it going to rain in [Dallas](location_name) today?
+- is it gonna snow in [Minneapolis](location_name)?
+- show me [California](location_name) weather
+- San Francisco

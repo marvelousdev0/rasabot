@@ -134,16 +134,58 @@ class ActionCheckWeather(Action):
         return "action_check_weather"
 
     def run(self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict[Text, Any]) -> List[Dict]:
-        print()
-        print("<===== Inside ActionCheckWeather =====>")
-        current_conditions = weatherApi.getWeatherByLocation("New York")
+        location_slot = str(tracker.get_slot('location'))
+        location_entity = next(
+            tracker.get_latest_entity_values('location_name'), None)
+        location = ""
+        if (location_entity is None):
+            location = location_slot
+        else:
+            location = location_entity
+        current_conditions = weatherApi.getWeatherByLocation(location)
         if(current_conditions == "no"):
             dispatcher.utter_message("Sorry I couldn't get weather info")
             return []
         else:
-            print(current_conditions)
-            print()
             messageToUser = "Temperature currently in {} is {}F. It is {} {} and feels like {}. UV index is {}.".format(
                 current_conditions["location"]["name"], current_conditions["current"]["temperature"], current_conditions["current"]["weather_descriptions"][0], current_conditions["current"]["weather_icons"], current_conditions["current"]["feelslike"], current_conditions["current"]["uv_index"])
             dispatcher.utter_message(messageToUser)
             return []
+
+
+class FormCheckWeather(FormAction):
+    def name(self):
+        return "form_action_check_weather"
+
+    @staticmethod
+    def required_slots(tracker: Tracker) -> List[Text]:
+        return ["location"]
+
+    def slot_mappings(self) -> Dict[Text, Union[Dict, List[Dict]]]:
+        return {"location": [self.from_text()]}
+        # return {"location": self.from_entity(entity="location_name")}
+
+    @staticmethod
+    def location_format() -> List[Text]:
+        return ["San Francisco"]
+
+    def validate_location(self, value: Text, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict[Text, Any]) -> Optional[Text]:
+        location = tracker.get_slot("location")
+        print(location, value)
+        if (location is None):
+            if value:
+                return {"location": value}
+            else:
+                dispatcher.utter_message(text="Please provide a location")
+                return {"location": None}
+        else:
+            return {"location": value}
+
+        # if value:
+        #     return {"location": value}
+        # else:
+        #     dispatcher.utter_message(text="Please provide a location")
+        #     return {"location": None}
+
+    def submit(self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict[Text, Any]) -> List[Dict]:
+        return []

@@ -2,6 +2,7 @@ actions:
 - action_check_basic_api
 - action_check_weather
 - action_employee_details
+- utter_affirm
 - utter_ask_employee_id
 - utter_ask_job_title
 - utter_cheer_up
@@ -14,19 +15,23 @@ actions:
 - utter_iamabot
 - utter_job_title_successful
 - utter_list_employees
+- utter_request_location
 - utter_wrong_employee_id
 - utter_wrong_job_title
 entities:
 - designation
 - emp_id
+- location_name
 forms:
+- form_action_check_weather
 - form_employee_first_name
 - form_employee_job_title
 intents:
+- check_weather
+- affirm
+- check_weather_location
 - employee_details
 - list_employees
-- affirm
-- check_weather
 - check_basic_api
 - employee_first_name
 - greet
@@ -36,6 +41,8 @@ intents:
 - mood_unhappy
 - bot_challenge
 responses:
+  utter_affirm:
+  - text: Sure!
   utter_ask_employee_id:
   - text: Can you please provide employee ID to continue?
   utter_ask_job_title:
@@ -61,6 +68,8 @@ responses:
   - text: Job title captured successfully.
   utter_list_employees:
   - text: Sure!
+  utter_request_location:
+  - text: Please provide a location
   utter_wrong_employee_id:
   - text: Wrong employee ID provided!
   utter_wrong_job_title:
@@ -73,6 +82,9 @@ slots:
     auto_fill: false
     type: unfeaturized
   job_title:
+    auto_fill: false
+    type: unfeaturized
+  location:
     auto_fill: false
     type: unfeaturized
   requested_slot:
