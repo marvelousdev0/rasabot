@@ -149,7 +149,9 @@ class ActionCheckWeather(Action):
         else:
             messageToUser = "Temperature currently in {} is {}F. It is {} {} and feels like {}. UV index is {}.".format(
                 current_conditions["location"]["name"], current_conditions["current"]["temperature"], current_conditions["current"]["weather_descriptions"][0], current_conditions["current"]["weather_icons"], current_conditions["current"]["feelslike"], current_conditions["current"]["uv_index"])
-            dispatcher.utter_message(messageToUser)
+            # dispatcher.utter_message(messageToUser)
+            dispatcher.utter_message(
+                json_message=current_conditions)
             return []
 
 
