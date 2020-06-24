@@ -2,6 +2,7 @@ actions:
 - action_check_basic_api
 - action_check_weather
 - action_employee_details
+- action_get_stock_data
 - utter_affirm
 - utter_ask_employee_id
 - utter_ask_job_title
@@ -22,14 +23,17 @@ entities:
 - designation
 - emp_id
 - location_name
+- stock_symbol_entity
 forms:
 - form_action_check_weather
 - form_employee_first_name
 - form_employee_job_title
+- form_get_stock_symbol
 intents:
+- get_stock_data
+- check_weather_location
 - check_weather
 - affirm
-- check_weather_location
 - employee_details
 - list_employees
 - check_basic_api
@@ -88,4 +92,7 @@ slots:
     auto_fill: false
     type: unfeaturized
   requested_slot:
+    type: unfeaturized
+  stock_symbol_slot:
+    auto_fill: false
     type: unfeaturized

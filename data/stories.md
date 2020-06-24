@@ -78,3 +78,18 @@
     - form{"name": null}
     - slot{"requested_slot": null}
     - action_check_weather
+
+## interactive_story_1
+* check_weather_location{"location_name": "Chicago"}
+    - action_check_weather
+    - slot{"location": null}
+
+## interactive_story_1
+* check_weather_location{"location_name": "Los Angeles"}
+    - action_check_weather
+    - slot{"location": null}
+
+## interactive_story_1
+* get_stock_data{"stock_symbol_entity": "AAPL"}
+    - action_get_stock_data
+    - slot{"stock_symbol_slot": null}

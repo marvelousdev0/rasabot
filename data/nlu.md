@@ -106,3 +106,14 @@
 - is it gonna snow in [Minneapolis](location_name)?
 - show me [California](location_name) weather
 - San Francisco
+- weather in [Chicago](location_name)
+- weather in [Los Angeles](location_name)
+
+## intent:get_stock_data
+- show me stock data
+- show me stock data for [AAPL](stock_symbol_entity)
+- stock data
+- stock data for [IBM](stock_symbol_entity)
+- [XOM](stock_symbol_entity) stock data
+- [AAPL](stock_symbol_entity) stock
+- [AAPL](stock_symbol_entity) stock

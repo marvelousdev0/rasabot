@@ -36,6 +36,7 @@ import json
 import re
 import weatherApi
 import employeesApi
+import stockApi
 
 
 class FormEmployeeFirstName(FormAction):
@@ -142,17 +143,19 @@ class ActionCheckWeather(Action):
             location = location_slot
         else:
             location = location_entity
+        data = stockApi.getStockData()
+        print(data)
         current_conditions = weatherApi.getWeatherByLocation(location)
-        if(current_conditions == "no"):
+        if(current_conditions is None):
             dispatcher.utter_message("Sorry I couldn't get weather info")
             return []
         else:
             messageToUser = "Temperature currently in {} is {}F. It is {} {} and feels like {}. UV index is {}.".format(
                 current_conditions["location"]["name"], current_conditions["current"]["temperature"], current_conditions["current"]["weather_descriptions"][0], current_conditions["current"]["weather_icons"], current_conditions["current"]["feelslike"], current_conditions["current"]["uv_index"])
             # dispatcher.utter_message(messageToUser)
-            dispatcher.utter_message(
-                json_message=current_conditions)
-            return []
+            message = {"payload": "weather", "data": current_conditions}
+            dispatcher.utter_message(json_message=message)
+            return [SlotSet("location", None)]
 
 
 class FormCheckWeather(FormAction):
@@ -165,7 +168,6 @@ class FormCheckWeather(FormAction):
 
     def slot_mappings(self) -> Dict[Text, Union[Dict, List[Dict]]]:
         return {"location": [self.from_text()]}
-        # return {"location": self.from_entity(entity="location_name")}
 
     @staticmethod
     def location_format() -> List[Text]:
@@ -183,11 +185,57 @@ class FormCheckWeather(FormAction):
         else:
             return {"location": value}
 
-        # if value:
-        #     return {"location": value}
-        # else:
-        #     dispatcher.utter_message(text="Please provide a location")
-        #     return {"location": None}
+    def submit(self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict[Text, Any]) -> List[Dict]:
+        return []
+
+class ActionGetStockData(Action):
+    def name(self):
+        return "action_get_stock_data"
+
+    def run(self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict[Text, Any]) -> List[Dict]:
+        stock_symbol_slot = str(tracker.get_slot('stock_symbol_slot'))
+        stock_symbol_entity = next(
+            tracker.get_latest_entity_values('stock_symbol_entity'), None)
+        stock_symbol = ""
+        if (stock_symbol_entity is None):
+            location = stock_symbol_slot
+        else:
+            location = stock_symbol_entity
+        stock_data = stockApi.getStockData()
+        if(stock_data is None):
+            dispatcher.utter_message("Sorry I couldn't get stock info")
+            return []
+        else:
+            message = {"payload": "stock", "data": stock_data}
+            dispatcher.utter_message(json_message=message)
+            return [SlotSet("stock_symbol_slot", None)]
+
+
+class FormGetStockSymbol(FormAction):
+    def name(self):
+        return "form_get_stock_symbol"
+
+    @staticmethod
+    def required_slots(tracker: Tracker) -> List[Text]:
+        return ["stock_symbol_slot"]
+
+    def slot_mappings(self) -> Dict[Text, Union[Dict, List[Dict]]]:
+        return {"stock_symbol_slot": [self.from_text()]}
+
+    @staticmethod
+    def location_format() -> List[Text]:
+        return ["AAPL", "IBM"]
+
+    def validate_stock_symbol(self, value: Text, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict[Text, Any]) -> Optional[Text]:
+        stock_symbol_slot = tracker.get_slot("stock_symbol_slot")
+        if (stock_symbol_slot is None):
+            if value:
+                return {"stock_symbol_slot": value}
+            else:
+                dispatcher.utter_message(text="Please provide a stock symbol")
+                return {"stock_symbol_slot": None}
+        else:
+            return {"stock_symbol_slot": value}
 
     def submit(self, dispatcher: CollectingDispatcher, tracker: Tracker, domain: Dict[Text, Any]) -> List[Dict]:
         return []

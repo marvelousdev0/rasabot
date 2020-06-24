@@ -19,4 +19,4 @@ def getWeatherByLocation(location_name):
     if (data):
         return data
     else:
-        return "no"
+        return None
